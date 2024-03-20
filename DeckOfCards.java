@@ -1,10 +1,11 @@
+import java.util.Collections;
 import java.util.ArrayList;
 import java.security.SecureRandom;
 
 public class DeckOfCards {
     private static final SecureRandom randomNumbers = new SecureRandom();
     private static final int NUMBER_OF_CARDS = 52; // constant # of Card
-    private Card[] deck = new Card[NUMBER_OF_CARDS];
+    private ArrayList<Card> deck = new ArrayList<>(NUMBER_OF_CARDS);
     private int currentCard = 0;
 
     public DeckOfCards() {
@@ -13,8 +14,8 @@ public class DeckOfCards {
         String[] suits = {"Hearts", "Diamonds", "Clubs", "Spades"};
 
         // populate deck with Card objects
-        for (int count = 0; count < deck.length; count++) {
-            deck[count] = new Card(faces[count % 13], suits[count / 13]);
+        for (int count = 0; count < NUMBER_OF_CARDS; count++) {
+            deck.add(new Card(faces[count % 13], suits[count / 13]));
         }
     }
 
@@ -22,25 +23,19 @@ public class DeckOfCards {
     public void shuffle() {
         // next call to method dealCard should start at deck[0] again
         currentCard = 0;
-        // for each Card, pick another random Card (0-51) and swap them
-        for (int first = 0; first < deck.length; first++) {
-            // select a random number between 0 and 5
-            int second = randomNumbers.nextInt(NUMBER_OF_CARDS);
-            Card temp = deck[first];
-            deck[first] = deck[second];
-            deck[second] = temp;
-        }
+        // Use Collections.shuffle() to shuffle the deck
+        Collections.shuffle(deck, randomNumbers);
     }
 
-    // deal one Card
+    //deal one Card
+    //Assuming you have a dealCard method to deal cards
     public Card dealCard() {
-        // determine whether Cards remain to be dealt
-        if (currentCard < deck.length) {
-            return deck[currentCard++]; // return current Card in array
+        if (currentCard < deck.size()) {
+            return deck.get(currentCard++);
+        } else {
+            return null; // or throw an exception if preferred
         }
-        else {
-            return null; // return null to indicate that all Cards were deal51 }
-        }
+
     }
 }
 
